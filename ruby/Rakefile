@@ -1,0 +1,57 @@
+# frozen_string_literal: true
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'rake'
+
+ENV['RACK_ENV'] ||= 'development'
+
+unless %w[production staging].include?(ENV['RACK_ENV'])
+  require 'rubocop/rake_task'
+  RuboCop::RakeTask.new(:rubocop)
+end
+
+task :environment do
+  require File.expand_path('config/environment', __dir__)
+end
+
+desc 'List all HTTP routes available'
+task routes: :environment do
+  Homework::API.routes.each do |route|
+    method  = route.request_method.ljust(10)
+    path    = route.origin
+    puts "     #{method} #{path}"
+  end
+end
+
+desc 'Starts an interactive Console'
+task console: :environment do
+  require 'irb'
+  Homework::App.instance.db_connection
+  binding.irb
+end
+task c: :console
+
+desc 'Starts a Server'
+task :server do
+  exec("bundle exec puma -p #{ENV.fetch('PORT', 3000)}")
+end
+task s: :server
+
+namespace :db do
+  desc 'create the database'
+  task create: :environment do
+    Homework::App.instance.db_create
+  end
+
+  desc 'migrate database, creates tables'
+  task migrate: :environment do
+    Homework::App.instance.db_migrate
+  end
+
+  desc 'generate sample data inside the db'
+  task seed: :environment do
+    Homework::App.instance.db_seed
+  end
+end

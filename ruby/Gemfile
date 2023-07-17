@@ -1,0 +1,37 @@
+source 'https://rubygems.org'
+
+ruby '2.7.0'
+
+gem 'activerecord', '~> 7.0'
+gem 'pg', '~> 1.4'
+gem 'puma'
+gem 'rack-cors'
+gem 'rack-ssl-enforcer'
+gem 'rake'
+gem 'sinatra'
+
+gem 'faker'
+
+gem 'grape'
+gem 'grape-entity'
+gem 'grape-middleware-logger'
+gem 'grape-swagger'
+gem 'grape-swagger-entity'
+
+group :development do
+  gem 'dotenv', '~> 2.8'
+  gem 'rubocop'
+  gem 'rubocop-rake'
+  gem 'rubocop-rspec'
+end
+
+group :development, :test do
+  gem 'factory_bot'
+  gem 'rack-test'
+  gem 'rspec'
+  gem 'webmock'
+end
+
+group :test do
+  gem 'database_cleaner-active_record'
+end
