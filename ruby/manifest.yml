@@ -6,6 +6,7 @@ defaults: &DEFAULT_APP
   memory: 512M
   stack: cflinuxfs3
   strategy: rolling
+  random-route: true
 
 applications:
 - <<: *DEFAULT_APP

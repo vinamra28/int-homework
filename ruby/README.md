@@ -12,6 +12,21 @@
    This should create the DB, the tables and seeds the same with the initial set of data
 5. Run the tests as specified in the handout (sent over email)
 
+## Steps to deploy
+
+1. Install cf CLI. Refer the [docs](https://docs.cloudfoundry.org/cf-cli/install-go-cli.html)
+1. Set API endpoint to `https://api.de.a9s.eu` using `cf api <endpoint>`
+1. Login into the CloudFoundry using `cf auth`
+1. Run `cf push` to deploy the application on CloudFoundry
+1. In order to view the services available, run `cf marketplace`
+1. In order to create a service, run `cf create-service <Service Name> <Service Plan> <Instance Name>`. Example `cf create-service a9s-postgresql10 postgresql-single-nano homework-postgres`
+1. Bind the service instance with the application using the command `cf bind-service <application name> <Service Instance Name>`. Example `cf bind-service homework homework-postgres`
+1. Execute the command `cf env <application_name>` to display the environment variable (“VCAP_SERVICES”) for the application. Example `cf env homework`
+1. Set the environment variables manually using `cf set-env <application name> ENV_KEY ENV_VALUE`. Example `cf set-env homework PASSWORD password`
+1. Run `cf restage homework`
+1. In order to view the logs, run `cf logs homework`
+1. Access the application at `https://homework-funny-toucan-nb.de.a9sapp.eu`
+
 ## Improvement suggestions:
 
 1. Delete API doesn't follows API standards. Making changes in existing codebase will require doing changes in `spec/` directory. As of now, `delete` APIs return response code as `200`, instead they should return `204`
