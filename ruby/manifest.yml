@@ -1,7 +1,7 @@
 ---
 defaults: &DEFAULT_APP
   buildpack: https://github.com/cloudfoundry/ruby-buildpack.git#v1.8.61
-  command: bundle exec puma -p $PORT
+  command: rake db:create && rake db:migrate && bundle exec puma -p $PORT
   disk_quota: 512M
   memory: 512M
   stack: cflinuxfs3
