@@ -9,7 +9,12 @@ class Homework::API::Authors < Grape::API
       use :author
     end
     post do
-      present Author.create(declared(params)[:author])
+      existingAuthor = Author.find_by(email: params[:author]['email'])
+      if existingAuthor
+        present existingAuthor
+      else
+        Author.create(declared(params)[:author])
+      end
     end
 
     get do
@@ -25,7 +30,10 @@ class Homework::API::Authors < Grape::API
       end
 
       put do
-        present current_author.update(declared(params)[:author])
+        curr_author = Author.find(params[:author_id])
+        curr_author.full_name = params[:author]['full_name']
+        curr_author.email = params[:author]['email']
+        curr_author.save
       end
     end
   end

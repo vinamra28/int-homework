@@ -26,6 +26,7 @@ class Homework::API::Articles < Grape::API
         end
       end
 
+      # deletes the article based on article ID
       get :delete do
         present current_article.destroy
       end
@@ -35,6 +36,25 @@ class Homework::API::Articles < Grape::API
       end
       put do
         present current_article.update(declared(params)[:article])
+      end
+
+      # Handles the request GET /api/v1/article/:article_id/author
+      get '/authors' do
+        article = Article.find(declared(params)[:article_id])
+        present article.authors
+      end
+
+      # Handles the request POST /api/v1/article/:article_id/author
+      params do
+        requires :article_id, type: Integer, desc: 'Article ID.'
+        use :author, type: Hash
+      end
+      post '/authors' do
+        article = Article.find(declared(params)[:article_id])
+        puts declared(params)[:author]
+        author = Author.create(declared(params)[:author])
+        article.authors << author
+        present author
       end
 
       mount Homework::API::Authors

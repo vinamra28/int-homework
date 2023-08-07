@@ -21,6 +21,7 @@ class Homework::API < Grape::API
       Homework.logger.info('Authorized')
     else
       Homework.logger.info('Unauthorized')
+      error!({ error: 'unauthorized access' }, 401)
     end
   end
 
@@ -44,7 +45,7 @@ class Homework::API < Grape::API
   add_swagger_documentation(
     add_version: true,
     doc_version: Homework.version,
-    hide_documentation_path: true,
+    hide_documentation_path: false,
     info: {
       title: 'Homework',
       description: File.read(File.join(Homework.root, 'README.md'))

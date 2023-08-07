@@ -2,8 +2,8 @@
 defaults: &DEFAULT_APP
   buildpack: https://github.com/cloudfoundry/ruby-buildpack.git#v1.8.61
   command: bundle exec puma -p $PORT
-  disk_quota: 128M
-  memory: 128M
+  disk_quota: 512M
+  memory: 512M
   stack: cflinuxfs3
   strategy: rolling
 
